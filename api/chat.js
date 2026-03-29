@@ -1,23 +1,22 @@
 export const config = { runtime: 'edge' };
 
 export default async function handler(req) {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      }
-    });
-  }
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  if (req.method === 'OPTIONS') return new Response(null, { headers });
 
   const GROQ_KEY = process.env.GROQ_KEY;
-  if (!GROQ_KEY) return new Response(JSON.stringify({ error: 'API key not configured' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+  if (!GROQ_KEY) return new Response(JSON.stringify({ error: 'API key not configured' }), { status: 500, headers });
 
   try {
-    const body = await req.json();
-    const prompt = body.prompt || 'Hello';
-    
+    const text = await req.text();
+    const { prompt } = JSON.parse(text);
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -31,24 +30,13 @@ export default async function handler(req) {
       })
     });
 
-    const text = await response.text();
-    
-    if (!response.ok) {
-      return new Response(JSON.stringify({ error: 'Groq error', status: response.status, details: text }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-      });
-    }
+    const result = await response.text();
+    if (!response.ok) return new Response(JSON.stringify({ error: result }), { status: 500, headers });
 
-    const data = JSON.parse(text);
-    const reply = data.choices?.[0]?.message?.content || 'Sorry, no response.';
-    return new Response(JSON.stringify({ reply }), {
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-    });
+    const data = JSON.parse(result);
+    const reply = data.choices?.[0]?.message?.content || 'No response.';
+    return new Response(JSON.stringify({ reply }), { headers });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-    });
+    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers });
   }
 }
