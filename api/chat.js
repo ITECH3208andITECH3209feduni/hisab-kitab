@@ -9,8 +9,19 @@ export default async function handler(req, res) {
   if (!GROQ_KEY) return res.status(500).json({ error: 'API key not configured' });
 
   try {
-    const prompt = req.body?.prompt;
-    if (!prompt) return res.status(400).json({ error: 'No prompt provided' });
+    // Parse body manually in case body-parser isn't active
+    let prompt;
+    if (typeof req.body === 'object' && req.body?.prompt) {
+      prompt = req.body.prompt;
+    } else {
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      const raw = Buffer.concat(chunks).toString();
+      const parsed = JSON.parse(raw);
+      prompt = parsed.prompt;
+    }
+
+    if (!prompt) return res.status(400).json({ error: 'No prompt' });
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
