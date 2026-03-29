@@ -1,6 +1,4 @@
-export const config = {
-  runtime: 'edge',
-};
+export const config = { runtime: 'edge' };
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') {
@@ -31,9 +29,9 @@ export default async function handler(req) {
     });
 
     const data = await groqRes.json();
-    const reply = data.choices?.[0]?.message?.content ?? 'No reply';
-
-    return new Response(JSON.stringify({ reply }), {
+    
+    // Return full data so we can debug
+    return new Response(JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
