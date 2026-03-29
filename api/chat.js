@@ -1,21 +1,16 @@
-export const config = { runtime: 'edge' };
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-export default async function handler(req) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-
-  if (req.method === 'OPTIONS') return new Response(null, { headers });
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   const GROQ_KEY = process.env.GROQ_KEY;
-  if (!GROQ_KEY) return new Response(JSON.stringify({ error: 'API key not configured' }), { status: 500, headers });
+  if (!GROQ_KEY) return res.status(500).json({ error: 'API key not configured' });
 
   try {
-    const text = await req.text();
-    const { prompt } = JSON.parse(text);
+    const prompt = req.body?.prompt;
+    if (!prompt) return res.status(400).json({ error: 'No prompt provided' });
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -30,13 +25,11 @@ export default async function handler(req) {
       })
     });
 
-    const result = await response.text();
-    if (!response.ok) return new Response(JSON.stringify({ error: result }), { status: 500, headers });
-
-    const data = JSON.parse(result);
+    const data = await response.json();
+    if (!response.ok) return res.status(500).json({ error: data });
     const reply = data.choices?.[0]?.message?.content || 'No response.';
-    return new Response(JSON.stringify({ reply }), { headers });
+    return res.status(200).json({ reply });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers });
+    return res.status(500).json({ error: e.message });
   }
 }
