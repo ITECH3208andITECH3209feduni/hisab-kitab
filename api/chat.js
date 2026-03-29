@@ -22,16 +22,16 @@ export default async function handler(req) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama3-8b-8192',
+        model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 500,
       }),
     });
 
     const data = await groqRes.json();
-    
-    // Return full data so we can debug
-    return new Response(JSON.stringify(data), {
+    const reply = data.choices?.[0]?.message?.content ?? 'No reply';
+
+    return new Response(JSON.stringify({ reply }), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
