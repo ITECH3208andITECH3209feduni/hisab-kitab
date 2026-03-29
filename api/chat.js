@@ -13,8 +13,7 @@ export default async function handler(req) {
 
   try {
     const GROQ_KEY = process.env.GROQ_KEY;
-    const text = await req.text();
-    const { prompt } = JSON.parse(text);
+    const { prompt } = await req.json();
 
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -33,12 +32,18 @@ export default async function handler(req) {
     const reply = data.choices?.[0]?.message?.content ?? 'No reply';
 
     return new Response(JSON.stringify({ reply }), {
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
     });
   }
 }

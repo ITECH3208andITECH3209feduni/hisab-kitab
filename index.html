@@ -3,181 +3,375 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hisab-Kitab — Free Business Manager for Nepal</title>
-  <meta name="description" content="Free bilingual business manager for Nepali small businesses. Track cash, generate VAT bills, manage stock and customers, and get AI advice."/>
+  <title>Hisab-Kitab — Free Business Cash Tracker for Nepal</title>
+  <meta name="description" content="Track your business income, expenses, generate VAT bills and get AI advice. Free, bilingual, works on any phone. Made for Nepal's small businesses."/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --green:#1D9E75; --green-dark:#0F6E56; --green-light:#E1F5EE; --cream:#F7F4EE; --dark:#1A1A14; --text:#2C2C24; --text2:#6B6A60; --white:#FFFFFF; }
+
+    :root {
+      --green: #1D9E75;
+      --green-dark: #0F6E56;
+      --green-light: #E1F5EE;
+      --cream: #F7F4EE;
+      --dark: #1A1A14;
+      --text: #2C2C24;
+      --text2: #6B6A60;
+      --white: #FFFFFF;
+    }
+
     html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
-    nav { position: fixed; top: 0; left: 0; right: 0; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(247,244,238,0.88); backdrop-filter: blur(14px); z-index: 100; border-bottom: 0.5px solid rgba(0,0,0,0.08); }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(247, 244, 238, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    }
     .nav-logo { font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--dark); text-decoration: none; }
-    .nav-links { display: flex; align-items: center; gap: 1.5rem; }
-    .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; }
-    .nav-links a:hover { color: var(--dark); }
-    .nav-cta { background: var(--green); color: white !important; padding: 8px 20px; border-radius: 100px; font-weight: 500; }
-    .nav-cta:hover { background: var(--green-dark) !important; }
-    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 7rem 1.5rem 4rem; text-align: center; position: relative; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(29,158,117,0.13) 0%, transparent 70%); }
-    .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green-dark); padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 500; margin-bottom: 1.5rem; position: relative; z-index: 1; animation: fadeUp 0.6s ease both; }
-    h1 { font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 9vw, 6rem); line-height: 1.02; color: var(--dark); max-width: 750px; position: relative; z-index: 1; animation: fadeUp 0.6s ease 0.1s both; }
-    h1 em { color: var(--green); font-style: italic; }
-    .hero-sub { font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--text2); max-width: 520px; margin: 1.5rem auto 2.5rem; line-height: 1.7; position: relative; z-index: 1; animation: fadeUp 0.6s ease 0.2s both; font-weight: 300; }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1; animation: fadeUp 0.6s ease 0.3s both; }
-    .btn-primary { background: var(--green); color: white; padding: 14px 32px; border-radius: 100px; font-size: 16px; font-weight: 500; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .nav-cta {
+      background: var(--green); color: white; padding: 8px 20px;
+      border-radius: 100px; font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--green-dark); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 6rem 1.5rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(29,158,117,0.12) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green-light); color: var(--green-dark);
+      padding: 6px 14px; border-radius: 100px;
+      font-size: 13px; font-weight: 500; margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      line-height: 1.05;
+      color: var(--dark);
+      max-width: 700px;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .hero h1 em { color: var(--green); font-style: italic; }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text2);
+      max-width: 500px;
+      margin: 1.5rem auto 2.5rem;
+      line-height: 1.7;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease 0.2s both;
+      font-weight: 300;
+    }
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+    .btn-primary {
+      background: var(--green); color: white;
+      padding: 14px 32px; border-radius: 100px;
+      font-size: 16px; font-weight: 500; text-decoration: none;
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
     .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
-    .btn-secondary { background: transparent; color: var(--text); padding: 14px 32px; border-radius: 100px; font-size: 16px; font-weight: 500; text-decoration: none; border: 1px solid rgba(0,0,0,0.15); transition: all 0.2s; }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      padding: 14px 32px; border-radius: 100px;
+      font-size: 16px; font-weight: 500; text-decoration: none;
+      border: 1px solid rgba(0,0,0,0.15); transition: all 0.2s;
+    }
     .btn-secondary:hover { background: white; }
-    .hero-note { margin-top: 1.25rem; font-size: 13px; color: var(--text2); position: relative; z-index: 1; animation: fadeUp 0.6s ease 0.4s both; }
-    .phone-wrap { margin-top: 4rem; position: relative; z-index: 1; animation: fadeUp 0.8s ease 0.5s both; }
-    .phone { width: 280px; margin: 0 auto; background: var(--dark); border-radius: 40px; padding: 12px; box-shadow: 0 40px 80px rgba(0,0,0,0.2); }
-    .phone-screen { background: #F7F6F2; border-radius: 30px; overflow: hidden; padding: 18px 14px; }
-    .ph { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
-    .pc { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 10px; }
-    .pm { background: white; border-radius: 8px; padding: 7px; }
-    .pml { font-size: 8px; color: #9B9A95; margin-bottom: 2px; }
-    .pmv { font-size: 12px; font-weight: 600; }
-    .pe { background: white; border-radius: 7px; padding: 7px 9px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-    .ped { font-size: 10px; }
-    .pem { font-size: 8px; color: #9B9A95; }
-    .pea { font-size: 10px; font-weight: 600; }
+
+    .hero-note {
+      margin-top: 1.25rem; font-size: 13px; color: var(--text2);
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease 0.4s both;
+    }
+
+    /* PHONE MOCKUP */
+    .hero-mockup {
+      margin-top: 4rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+    .phone {
+      width: 280px; margin: 0 auto;
+      background: var(--dark);
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1);
+    }
+    .phone-screen {
+      background: #F7F6F2;
+      border-radius: 30px;
+      overflow: hidden;
+      padding: 20px 16px;
+    }
+    .phone-header { font-family: 'Instrument Serif', serif; font-size: 18px; color: #1A1A18; margin-bottom: 12px; }
+    .phone-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+    .phone-card { background: white; border-radius: 10px; padding: 8px; }
+    .phone-card-label { font-size: 9px; color: #9B9A95; margin-bottom: 3px; }
+    .phone-card-val { font-size: 13px; font-weight: 600; }
+    .phone-entries { display: flex; flex-direction: column; gap: 6px; }
+    .phone-entry { background: white; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; }
+    .phone-entry-left { display: flex; align-items: center; gap: 7px; }
+    .phone-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .phone-entry-desc { font-size: 11px; color: #1A1A18; }
+    .phone-entry-meta { font-size: 9px; color: #9B9A95; }
+    .phone-entry-amt { font-size: 11px; font-weight: 600; }
+
+    /* FEATURES */
     .section { padding: 6rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .sec-label { font-size: 12px; font-weight: 500; color: var(--green); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
-    .sec-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3.2rem); color: var(--dark); margin-bottom: 1rem; line-height: 1.12; }
-    .sec-sub { font-size: 1.05rem; color: var(--text2); max-width: 500px; line-height: 1.7; font-weight: 300; }
+    .section-label { font-size: 12px; font-weight: 500; color: var(--green); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+    .section-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3rem); color: var(--dark); margin-bottom: 1rem; line-height: 1.15; }
+    .section-sub { font-size: 1.05rem; color: var(--text2); max-width: 500px; line-height: 1.7; font-weight: 300; }
+
     .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: rgba(0,0,0,0.08); border-radius: 20px; overflow: hidden; margin-top: 3rem; }
-    .feat { background: var(--cream); padding: 2rem; transition: background 0.2s; }
-    .feat:hover { background: white; }
-    .feat-icon { font-size: 26px; margin-bottom: 1rem; }
-    .feat-title { font-size: 16px; font-weight: 500; color: var(--dark); margin-bottom: 0.5rem; }
-    .feat-desc { font-size: 14px; color: var(--text2); line-height: 1.6; font-weight: 300; }
-    .dark-section { background: var(--dark); padding: 5rem 1.5rem; text-align: center; }
-    .dark-section .sec-label { color: var(--green); }
-    .dark-section .sec-title { color: white; }
-    .dark-section .sec-sub { color: rgba(255,255,255,0.5); margin: 0 auto 2.5rem; }
-    .lang-cards { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .lang-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem 2rem; min-width: 180px; }
+    .feature-card { background: var(--cream); padding: 2rem; transition: background 0.2s; }
+    .feature-card:hover { background: white; }
+    .feature-icon { font-size: 28px; margin-bottom: 1rem; }
+    .feature-title { font-size: 16px; font-weight: 500; color: var(--dark); margin-bottom: 0.5rem; }
+    .feature-desc { font-size: 14px; color: var(--text2); line-height: 1.6; font-weight: 300; }
+
+    /* BILINGUAL SECTION */
+    .bilingual-section {
+      background: var(--dark);
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
+    .bilingual-section .section-label { color: var(--green); }
+    .bilingual-section .section-title { color: white; }
+    .bilingual-section .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto; }
+    .lang-demo { display: flex; gap: 16px; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .lang-card {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 1.5rem 2rem; min-width: 200px;
+    }
     .lang-card-title { font-family: 'Instrument Serif', serif; font-size: 1.5rem; color: white; margin-bottom: 0.5rem; }
     .lang-card-sub { font-size: 13px; color: rgba(255,255,255,0.4); }
-    .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 3rem; }
-    .how-step { text-align: center; }
-    .how-num { width: 40px; height: 40px; border-radius: 50%; background: var(--green-light); color: var(--green-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; margin: 0 auto 1rem; }
-    .how-title { font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
-    .how-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
-    .stats-section { padding: 4rem 1.5rem; text-align: center; background: white; }
-    .stats-grid { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
-    .stat { text-align: center; }
-    .stat-num { font-family: 'Instrument Serif', serif; font-size: 3.5rem; color: var(--green); line-height: 1; }
-    .stat-label { font-size: 14px; color: var(--text2); margin-top: 4px; font-weight: 300; }
-    .cta-section { background: var(--green); padding: 5rem 1.5rem; text-align: center; }
+
+    /* SOCIAL PROOF */
+    .proof-section { padding: 5rem 1.5rem; text-align: center; }
+    .proof-stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+    .proof-stat { text-align: center; }
+    .proof-num { font-family: 'Instrument Serif', serif; font-size: 3rem; color: var(--green); }
+    .proof-label { font-size: 14px; color: var(--text2); font-weight: 300; }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: var(--green);
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
     .cta-section h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3.5rem); color: white; margin-bottom: 1rem; line-height: 1.1; }
     .cta-section p { font-size: 1.05rem; color: rgba(255,255,255,0.75); margin-bottom: 2rem; font-weight: 300; }
     .btn-white { background: white; color: var(--green-dark); padding: 14px 36px; border-radius: 100px; font-size: 16px; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.2s; }
     .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-    footer { padding: 2rem 1.5rem; text-align: center; font-size: 13px; color: var(--text2); border-top: 0.5px solid rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 1rem; }
+
+    /* FOOTER */
+    footer { padding: 2rem 1.5rem; text-align: center; font-size: 13px; color: var(--text2); border-top: 0.5px solid rgba(0,0,0,0.08); }
     footer a { color: var(--green); text-decoration: none; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    @media (max-width: 600px) { .nav-links { display: none; } .hero-btns { flex-direction: column; align-items: center; } .btn-primary, .btn-secondary { width: 100%; max-width: 280px; justify-content: center; } footer { flex-direction: column; text-align: center; } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 280px; justify-content: center; }
+    }
   </style>
 </head>
 <body>
+
 <nav>
   <a class="nav-logo" href="#">📒 Hisab-Kitab</a>
-  <div class="nav-links">
-    <a href="#features">Features</a>
-    <a href="#how">How it works</a>
-    <a href="app.html" class="nav-cta">Open App →</a>
-  </div>
+  <a class="nav-cta" href="app.html">Open App →</a>
 </nav>
 
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="badge">✦ Free for Nepali businesses — forever</div>
-  <h1>Your shop's<br><em>complete manager.</em></h1>
-  <p class="hero-sub">Cash tracking, VAT bills, stock management, customer records, and AI business advice — all in one free app. Works in Nepali and English.</p>
+  <div class="hero-badge">✦ Free for Nepali businesses</div>
+  <h1>Run your shop.<br><em>Not your spreadsheet.</em></h1>
+  <p class="hero-sub">Track cash in and out, generate VAT bills, see your profits, and get AI advice — all in Nepali or English. Works on any phone.</p>
   <div class="hero-btns">
     <a href="app.html" class="btn-primary">Start for Free →</a>
-    <a href="#features" class="btn-secondary">See all features</a>
+    <a href="#features" class="btn-secondary">See how it works</a>
   </div>
-  <p class="hero-note">No download. No sign-up required. No cost. Ever.</p>
-  <div class="phone-wrap">
+  <p class="hero-note">No download. No sign up. No cost.</p>
+
+  <div class="hero-mockup">
     <div class="phone">
       <div class="phone-screen">
-        <div class="ph">हिसाब-किताब</div>
-        <div class="pc">
-          <div class="pm"><div class="pml">आम्दानी</div><div class="pmv" style="color:#1D9E75">रू 12,500</div></div>
-          <div class="pm"><div class="pml">खर्च</div><div class="pmv" style="color:#D85A30">रू 4,200</div></div>
-          <div class="pm"><div class="pml">मौज्दात</div><div class="pmv" style="color:#1D9E75">रू 8,300</div></div>
+        <div class="phone-header">हिसाब-किताब</div>
+        <div class="phone-cards">
+          <div class="phone-card">
+            <div class="phone-card-label">आम्दानी</div>
+            <div class="phone-card-val" style="color:#1D9E75">रू 12,500</div>
+          </div>
+          <div class="phone-card">
+            <div class="phone-card-label">खर्च</div>
+            <div class="phone-card-val" style="color:#D85A30">रू 4,200</div>
+          </div>
+          <div class="phone-card">
+            <div class="phone-card-label">मौज्दात</div>
+            <div class="phone-card-val" style="color:#1D9E75">रू 8,300</div>
+          </div>
         </div>
-        <div class="pe"><div><div class="ped">Morning Sales</div><div class="pem">Sales · Today</div></div><div class="pea" style="color:#1D9E75">+रू 3,500</div></div>
-        <div class="pe"><div><div class="ped">Stock Purchase</div><div class="pem">Purchase · Today</div></div><div class="pea" style="color:#D85A30">−रू 1,200</div></div>
-        <div class="pe"><div><div class="ped">Afternoon Sales</div><div class="pem">Sales · Today</div></div><div class="pea" style="color:#1D9E75">+रू 2,800</div></div>
+        <div class="phone-entries">
+          <div class="phone-entry">
+            <div class="phone-entry-left">
+              <div class="phone-dot" style="background:#1D9E75"></div>
+              <div>
+                <div class="phone-entry-desc">Sales — Morning</div>
+                <div class="phone-entry-meta">Sales · Today</div>
+              </div>
+            </div>
+            <div class="phone-entry-amt" style="color:#1D9E75">+रू 3,500</div>
+          </div>
+          <div class="phone-entry">
+            <div class="phone-entry-left">
+              <div class="phone-dot" style="background:#D85A30"></div>
+              <div>
+                <div class="phone-entry-desc">Stock Purchase</div>
+                <div class="phone-entry-meta">Purchase · Today</div>
+              </div>
+            </div>
+            <div class="phone-entry-amt" style="color:#D85A30">−रू 1,200</div>
+          </div>
+          <div class="phone-entry">
+            <div class="phone-entry-left">
+              <div class="phone-dot" style="background:#1D9E75"></div>
+              <div>
+                <div class="phone-entry-desc">Afternoon Sales</div>
+                <div class="phone-entry-meta">Sales · Today</div>
+              </div>
+            </div>
+            <div class="phone-entry-amt" style="color:#1D9E75">+रू 2,800</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="section" id="features">
-  <div class="sec-label">Everything you need</div>
-  <h2 class="sec-title">Built for Nepal's<br>real shopkeepers</h2>
-  <p class="sec-sub">No irrelevant features. No complicated menus. Just the tools a Nepali small business actually needs every day.</p>
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Everything a Nepali<br>shopkeeper needs</h2>
+  <p class="section-sub">Built specifically for Nepal — VAT rates, Nepali language, WhatsApp sharing. No irrelevant features.</p>
+
   <div class="features-grid">
-    <div class="feat"><div class="feat-icon">📒</div><div class="feat-title">Daily Hisab-Kitab</div><div class="feat-desc">Record every cash in and out in seconds. Filter by today, week, or month. Add notes and categories. Always up to date.</div></div>
-    <div class="feat"><div class="feat-icon">🧾</div><div class="feat-title">VAT Bill Generator</div><div class="feat-desc">Generate IRD-compliant VAT bills with 13% auto-calculated. Add your PAN number. Send to customers via WhatsApp instantly.</div></div>
-    <div class="feat"><div class="feat-icon">📊</div><div class="feat-title">Profit Reports</div><div class="feat-desc">7-day income vs expense chart, category breakdown, and monthly tax summary with VAT collected. Know your numbers.</div></div>
-    <div class="feat"><div class="feat-icon">📦</div><div class="feat-title">Stock Management</div><div class="feat-desc">Track inventory quantities with low-stock alerts. Update stock on purchases and sales. Never run out unexpectedly again.</div></div>
-    <div class="feat"><div class="feat-icon">👥</div><div class="feat-title">Customer Records</div><div class="feat-desc">Save customer names, phones, and addresses. Call or WhatsApp them directly from the app with one tap.</div></div>
-    <div class="feat"><div class="feat-icon">✦</div><div class="feat-title">AI Business Advisor</div><div class="feat-desc">Ask anything about your business in Nepali or English. Get smart, specific advice based on your actual numbers.</div></div>
-    <div class="feat"><div class="feat-icon">📄</div><div class="feat-title">PDF Export</div><div class="feat-desc">Export your daily or monthly report as a PDF to save, print, or send to your accountant.</div></div>
-    <div class="feat"><div class="feat-icon">📅</div><div class="feat-title">Nepali BS Date</div><div class="feat-desc">See the current Bikram Sambat date alongside the Gregorian date, always visible at the top of the app.</div></div>
-    <div class="feat"><div class="feat-icon">📱</div><div class="feat-title">Install as App</div><div class="feat-desc">Install on your phone's home screen like a native app. Works offline too — no internet needed for the ledger.</div></div>
+    <div class="feature-card">
+      <div class="feature-icon">📒</div>
+      <div class="feature-title">Daily Hisab-Kitab</div>
+      <div class="feature-desc">Record every cash in and out in seconds. Filter by today, week, or month. Your ledger always up to date.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧾</div>
+      <div class="feature-title">VAT Bill Generator</div>
+      <div class="feature-desc">Generate IRD-compliant VAT bills with 13% auto-calculated. Add your PAN number and send to customers via WhatsApp instantly.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Profit Reports</div>
+      <div class="feature-desc">See your income vs expenses as a 7-day chart. Know exactly where your money is going with category breakdowns.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✦</div>
+      <div class="feature-title">AI Business Advisor</div>
+      <div class="feature-desc">Ask anything about your business. Get smart, specific advice based on your actual numbers — in Nepali or English.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <div class="feature-title">Works on Any Phone</div>
+      <div class="feature-desc">No app download needed. Open it in your phone browser, share the link with WhatsApp. Works offline too.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Your Data, Your Phone</div>
+      <div class="feature-desc">All your data stays on your device. No account needed, no server storing your business information.</div>
+    </div>
   </div>
 </section>
 
-<div class="dark-section" id="bilingual">
-  <div class="sec-label">Bilingual</div>
-  <h2 class="sec-title">In your language</h2>
-  <p class="sec-sub">Switch between English and Nepali with one tap. Every label, button, and AI response.</p>
-  <div class="lang-cards">
-    <div class="lang-card"><div class="lang-card-title">Hisab-Kitab</div><div class="lang-card-sub">Full English interface</div></div>
-    <div class="lang-card"><div class="lang-card-title">हिसाब-किताब</div><div class="lang-card-sub">पूर्ण नेपाली इन्टरफेस</div></div>
+<div class="bilingual-section">
+  <div class="section-label">Bilingual</div>
+  <h2 class="section-title">In your language</h2>
+  <p class="section-sub">Switch between English and Nepali with one tap. Every label, every button, every AI response.</p>
+  <div class="lang-demo">
+    <div class="lang-card">
+      <div class="lang-card-title">Hisab-Kitab</div>
+      <div class="lang-card-sub">English interface</div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-card-title">हिसाब-किताब</div>
+      <div class="lang-card-sub">नेपाली इन्टरफेस</div>
+    </div>
   </div>
 </div>
 
-<section class="section" id="how">
-  <div class="sec-label">Simple to start</div>
-  <h2 class="sec-title">Running in 30 seconds</h2>
-  <p class="sec-sub">No setup, no tutorial, no onboarding. Just open and go.</p>
-  <div class="how-grid">
-    <div class="how-step"><div class="how-num">1</div><div class="how-title">Open the app</div><div class="how-desc">Just tap the link. No download, no sign-up needed to start.</div></div>
-    <div class="how-step"><div class="how-num">2</div><div class="how-title">Add a transaction</div><div class="how-desc">Tap Cash In or Cash Out, enter the amount and description. Done.</div></div>
-    <div class="how-step"><div class="how-num">3</div><div class="how-title">Check your balance</div><div class="how-desc">See your live income, expenses, and profit at the top of every screen.</div></div>
-    <div class="how-step"><div class="how-num">4</div><div class="how-title">Share or print</div><div class="how-desc">Send your daily report via WhatsApp or save as a PDF in one tap.</div></div>
-  </div>
-</section>
-
-<div class="stats-section">
-  <div class="sec-label" style="text-align:center;">Why Hisab-Kitab</div>
-  <div class="stats-grid">
-    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free forever</div></div>
-    <div class="stat"><div class="stat-num">13%</div><div class="stat-label">Nepal VAT auto-calculated</div></div>
-    <div class="stat"><div class="stat-num">2</div><div class="stat-label">Languages (EN + नेपाली)</div></div>
-    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Downloads needed</div></div>
+<div class="proof-section">
+  <div class="section-label">Why Hisab-Kitab</div>
+  <h2 class="section-title" style="font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3rem);color:var(--dark);">Built for Nepal's<br>real businesses</h2>
+  <div class="proof-stats">
+    <div class="proof-stat">
+      <div class="proof-num">100%</div>
+      <div class="proof-label">Free forever</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">13%</div>
+      <div class="proof-label">VAT auto-calculated</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">2</div>
+      <div class="proof-label">Languages supported</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">0</div>
+      <div class="proof-label">Downloads needed</div>
+    </div>
   </div>
 </div>
 
 <div class="cta-section">
-  <h2>Start managing your<br>business today.</h2>
-  <p>Free. No sign-up. No download. Open in any browser.</p>
+  <h2>Start tracking today.<br>It takes 30 seconds.</h2>
+  <p>No sign up. No credit card. No download. Just open and go.</p>
   <a href="app.html" class="btn-white">Open Hisab-Kitab →</a>
 </div>
 
 <footer>
-  <span>📒 Hisab-Kitab — Made for Nepal's small businesses</span>
-  <span><a href="app.html">Open App</a> &nbsp;·&nbsp; <a href="mailto:hello@hisabkitab.com.np">Contact</a></span>
+  <p>Made with ❤️ for Nepal's small businesses &nbsp;·&nbsp; <a href="app.html">Open App</a></p>
 </footer>
+
 </body>
 </html>
